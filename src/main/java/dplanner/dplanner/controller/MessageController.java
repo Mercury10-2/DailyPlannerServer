@@ -14,9 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 import dplanner.dplanner.dto.MessageDto;
 import dplanner.dplanner.service.MessageService;
 
-//  GIT!!
 @RestController
-@RequestMapping("/messages")
+@RequestMapping("/events")
 @CrossOrigin(origins = { "http://localhost:8081" })
 public class MessageController {
     
@@ -53,6 +52,11 @@ public class MessageController {
                                     @PathVariable(name = "query") String query) {
         return service.createEntry(header, comment, date, month, year, hour, minute, query);
     }
+/*
+    @PutMapping("/{dto}")
+    public List<MessageDto> editEvent(@PathVariable(name = "dto") String event) {
+        return service.editEvent(event);
+    }*/
 
     @PutMapping("/{id}/{header}/{comment}/{date}/{month}/{year}/{hour}/{minute}/{query}")
     public List<MessageDto> editEntry(  @PathVariable(name = "id") long id,

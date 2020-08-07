@@ -68,13 +68,40 @@ public class MessageService {
         ZonedDateTime plannedTime = ZonedDateTime.of(year, month, date, hour, minute, 0, 0, ZoneId.systemDefault());
         return TimeService.changeToDto(messageRepository.save(new Message(header, comment, plannedTime, plannedTime)));
     }
+/*
+    public List<MessageDto> editEvent(String data) {
+        Map<String,String> event = new HashMap<String,String>();
+        ObjectMapper mapper = new ObjectMapper();
+        event = mapper.readValue(data, HashMap.class);
+        Message message = messageRepository.findById(Long.parseLong(event.get("id"))).get();
+        message.setHeader(event.get("header").toString());
+        message.setComments(event.get("comment").toString());
+        if (!message.isCompleted())
+            message.setPlannedTime(ZonedDateTime.of(Integer.parseInt(event.get("year")), Integer.parseInt(event.get("month")), Integer.parseInt(event.get("date")), Integer.parseInt(event.get("hour")), Integer.parseInt(event.get("minute")), 0, 0, ZoneId.systemDefault()));
+        else
+            message.setCompletionTime(ZonedDateTime.of(Integer.parseInt(event.get("year")), Integer.parseInt(event.get("month")), Integer.parseInt(event.get("date")), Integer.parseInt(event.get("hour")), Integer.parseInt(event.get("minute")), 0, 0, ZoneId.systemDefault()));
+        messageRepository.save(message);
+        return getMessages(event.get("query").toString());
+        Message message = messageRepository.findById(event.get()).get();
+        message.setHeader(event.getHeader());
+        message.setComments(event.getComment());
+        if (!message.isCompleted())
+            message.setPlannedTime(ZonedDateTime.of(event.getYear(), event.getMonth(), event.getDate(), event.getHour(), event.getMinute(), 0, 0, ZoneId.systemDefault()));
+        else
+            message.setCompletionTime(ZonedDateTime.of(event.getYear(), event.getMonth(), event.getDate(), event.getHour(), event.getMinute(), 0, 0, ZoneId.systemDefault()));
+        messageRepository.save(message);
+        return getMessages(event.getQuery());
+    }*/
 
     public List<MessageDto> editEntry(long id, String header, String comment, int date, int month,
                                         int year, int hour, int minute, String query) {
         Message message = messageRepository.findById(id).get();
         message.setHeader(header);
         message.setComments(comment);
-        message.setPlannedTime(ZonedDateTime.of(year, month, date, hour, minute, 0, 0, ZoneId.systemDefault()));
+        if (!message.isCompleted())
+            message.setPlannedTime(ZonedDateTime.of(year, month, date, hour, minute, 0, 0, ZoneId.systemDefault()));
+        else
+            message.setCompletionTime(ZonedDateTime.of(year, month, date, hour, minute, 0, 0, ZoneId.systemDefault()));
         messageRepository.save(message);
         return getMessages(query);
     }
