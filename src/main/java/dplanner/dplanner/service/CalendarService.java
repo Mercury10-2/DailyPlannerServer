@@ -26,8 +26,13 @@ public class CalendarService {
     }
 
     private Event changeToEvent(Message message) {
-        return new Event(message.getId(), message.getHeader(), message.getComments(),
-                dateToString(message.getPlannedTime()), dateToString(message.getPlannedTime()));
+        return new Event(
+                message.getId(),
+                message.getHeader(),
+                message.getComments(),
+                message.isCompleted(),
+                dateToString(message.isCompleted() ? message.getCompletionTime() : message.getPlannedTime()),
+                dateToString(message.isCompleted() ? message.getCompletionTime() : message.getPlannedTime()));
     }
 
     private String dateToString(ZonedDateTime date) {
