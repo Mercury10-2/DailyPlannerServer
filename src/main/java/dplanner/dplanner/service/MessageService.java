@@ -27,14 +27,23 @@ public class MessageService {
 
     public void generateData() {
         if (messageRepository.findAll().isEmpty()) {
-            messageRepository.save(new Message("Сходить в магазин", "Список стандартный", ZonedDateTime.now().plusDays(3), TimeService.DEFAULT));
-            messageRepository.save(new Message("Помыть посуду", "", ZonedDateTime.now().plusDays(2), TimeService.DEFAULT));
-            messageRepository.save(new Message("Сделать упражнения", "", ZonedDateTime.now().plusDays(1), TimeService.DEFAULT));
-            messageRepository.save(new Message("Помедитировать", "Дома и правители", ZonedDateTime.now().plusDays(1), TimeService.DEFAULT));
-            messageRepository.save(new Message("Съездить в отпуск", "Море, море, море", ZonedDateTime.now().plusMonths(2), TimeService.DEFAULT));
-            messageRepository.save(new Message("Сходить в гости", "ДР у начальника", ZonedDateTime.now().plusWeeks(1), TimeService.DEFAULT));
-            messageRepository.save(new Message("Переехать", "В глушь, в Саратов", ZonedDateTime.now().plusYears(2), TimeService.DEFAULT));
-            Message msg = new Message("Поесть", "", ZonedDateTime.now().plusDays(1), ZonedDateTime.now());
+            messageRepository.save(new Message("Магазин", "Список на работе", ZonedDateTime.now().plusDays(3), TimeService.DEFAULT));
+            messageRepository.save(new Message("Встреча с Г.", "Не забыть с.", ZonedDateTime.now().plusDays(9), TimeService.DEFAULT));
+            messageRepository.save(new Message("Закончить к.", "Взять т.", ZonedDateTime.now().plusDays(17), TimeService.DEFAULT));
+            messageRepository.save(new Message("Гостиный Двор", "18:00", ZonedDateTime.now().plusDays(1), TimeService.DEFAULT));
+            messageRepository.save(new Message("Отпуск", "10 дней", ZonedDateTime.now().plusMonths(2), TimeService.DEFAULT));
+            messageRepository.save(new Message("ДР у начальника", "Дача", ZonedDateTime.now().plusWeeks(6), TimeService.DEFAULT));
+            messageRepository.save(new Message("Переезд", "В глушь, в Саратов", ZonedDateTime.now().plusYears(2), TimeService.DEFAULT));
+            Message msg = new Message("Забрать м.", "Позвонить заранее", ZonedDateTime.now().plusDays(5), ZonedDateTime.now());
+            msg.setCompleted(true);
+            messageRepository.save(msg);
+            msg = new Message("Налоговая", "Не забыть ИНН", ZonedDateTime.now().plusDays(1), ZonedDateTime.now());
+            msg.setCompleted(true);
+            messageRepository.save(msg);
+            msg = new Message("Оставить к.", "В пакете", ZonedDateTime.now().plusDays(2), ZonedDateTime.now());
+            msg.setCompleted(true);
+            messageRepository.save(msg);
+            msg = new Message("Встреча с В.", "Позвонит", ZonedDateTime.now().plusDays(4), ZonedDateTime.now());
             msg.setCompleted(true);
             messageRepository.save(msg);
         }
@@ -66,32 +75,8 @@ public class MessageService {
     public MessageDto createEntry(String header, String comment, int date, int month,
                                         int year, int hour, int minute, String query) {
         ZonedDateTime plannedTime = ZonedDateTime.of(year, month, date, hour, minute, 0, 0, ZoneId.systemDefault());
-        return TimeService.changeToDto(messageRepository.save(new Message(header, comment, plannedTime, plannedTime)));
+        return TimeService.changeToDto(messageRepository.save(new Message(header, comment, plannedTime, TimeService.DEFAULT)));
     }
-/*
-    public List<MessageDto> editEvent(String data) {
-        Map<String,String> event = new HashMap<String,String>();
-        ObjectMapper mapper = new ObjectMapper();
-        event = mapper.readValue(data, HashMap.class);
-        Message message = messageRepository.findById(Long.parseLong(event.get("id"))).get();
-        message.setHeader(event.get("header").toString());
-        message.setComments(event.get("comment").toString());
-        if (!message.isCompleted())
-            message.setPlannedTime(ZonedDateTime.of(Integer.parseInt(event.get("year")), Integer.parseInt(event.get("month")), Integer.parseInt(event.get("date")), Integer.parseInt(event.get("hour")), Integer.parseInt(event.get("minute")), 0, 0, ZoneId.systemDefault()));
-        else
-            message.setCompletionTime(ZonedDateTime.of(Integer.parseInt(event.get("year")), Integer.parseInt(event.get("month")), Integer.parseInt(event.get("date")), Integer.parseInt(event.get("hour")), Integer.parseInt(event.get("minute")), 0, 0, ZoneId.systemDefault()));
-        messageRepository.save(message);
-        return getMessages(event.get("query").toString());
-        Message message = messageRepository.findById(event.get()).get();
-        message.setHeader(event.getHeader());
-        message.setComments(event.getComment());
-        if (!message.isCompleted())
-            message.setPlannedTime(ZonedDateTime.of(event.getYear(), event.getMonth(), event.getDate(), event.getHour(), event.getMinute(), 0, 0, ZoneId.systemDefault()));
-        else
-            message.setCompletionTime(ZonedDateTime.of(event.getYear(), event.getMonth(), event.getDate(), event.getHour(), event.getMinute(), 0, 0, ZoneId.systemDefault()));
-        messageRepository.save(message);
-        return getMessages(event.getQuery());
-    }*/
 
     public List<MessageDto> editEntry(long id, String header, String comment, int date, int month,
                                         int year, int hour, int minute, String query) {
