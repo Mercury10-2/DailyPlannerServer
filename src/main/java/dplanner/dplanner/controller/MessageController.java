@@ -17,7 +17,7 @@ import dplanner.dplanner.service.MessageService;
 @RestController
 @RequestMapping("/events")
 //@CrossOrigin(origins = { "http://localhost:8081" })
-@CrossOrigin(origins = { "https://mercury10-2.github.io/DailyPlannerClient/" })
+@CrossOrigin(origins = { "https://mercury10-2.github.io" })
 public class MessageController {
     
     private final MessageService service;
