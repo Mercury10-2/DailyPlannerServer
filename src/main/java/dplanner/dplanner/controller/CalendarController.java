@@ -12,7 +12,8 @@ import dplanner.dplanner.service.CalendarService;
 
 @RestController
 @RequestMapping("/calendar")
-@CrossOrigin(origins = { "http://localhost:8081" })
+//@CrossOrigin(origins = { "http://localhost:8081" })
+@CrossOrigin(origins = { "https://mercury10-2.github.io/DailyPlannerClient/" })
 public class CalendarController {
     
     private final CalendarService service;
